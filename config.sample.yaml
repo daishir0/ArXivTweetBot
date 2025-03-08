@@ -1,0 +1,21 @@
+# OpenAI API Configuration
+openai:
+  api_key: "your-openai-api-key"
+
+# Twitter API Configuration
+twitter:
+  # OAuth 1.0a認証情報（v1.1 API用）
+  api_key: "your-twitter-api-key"
+  api_key_secret: "your-twitter-api-key-secret"
+  access_token: "your-twitter-access-token"
+  access_token_secret: "your-twitter-access-token-secret"
+  bearer_token: "your-twitter-bearer-token"
+  
+  # OAuth 2.0認証情報（v2 API用）
+  client_id: "your-twitter-client-id"
+  client_secret: "your-twitter-client-secret"
+
+# Prompt Configuration
+prompt:
+  template: "あなたは研究者です。{論文テキスト}を、中学生が興味を持ってくれるくらいで、日本語で絵文字も使って、わかりやすく起承転結で解説してください。必ず以下の形式で回答してください：\n\n起: （論文の背景や問題提起）\n\n承: （研究の手法や取り組み）\n\n転: （研究結果や発見）\n\n結: （結論や今後の展望）\n\n各セクションは必ず「起:」「承:」「転:」「結:」で始めてください。\n\n重要：各セクションは80文字以内で簡潔にまとめてください。長すぎると投稿時に切れてしまいます。"
+  greeting: "C(＾▽＾ )つ みんなー！今日は論文{論文タイトル}について起承転結で解説します！{読者に興味を持ってもらうような短文。だよ！で終わる}"

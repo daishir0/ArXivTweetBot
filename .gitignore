@@ -1,0 +1,7 @@
+dl/
+logs/
+processed/
+summary/
+text/
+config.yaml
+__pycache__
