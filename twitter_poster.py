@@ -11,6 +11,31 @@ import tweepy
 DEFAULT_XQUIK_API_BASE_URL = "https://xquik.com/api/v1"
 
 
+def get_twitter_backend(config):
+    """
+    Twitter投稿バックエンドを検証して返す
+    """
+    backend = config.get('backend', 'x-api')
+    if backend not in ('x-api', 'xquik'):
+        raise ValueError(f"Unsupported twitter backend: {backend}")
+    return backend
+
+
+def get_required_xquik_config(config):
+    """
+    Xquik投稿に必要な設定を検証して返す
+    """
+    xquik_config = config.get('xquik', {})
+    missing_fields = [
+        field for field in ('account', 'api_key')
+        if not xquik_config.get(field)
+    ]
+    if missing_fields:
+        missing = ", ".join(missing_fields)
+        raise ValueError(f"Missing required twitter.xquik config field(s): {missing}")
+    return xquik_config
+
+
 def create_twitter_client(config):
     """
     Tweepyクライアントを初期化する
@@ -27,7 +52,7 @@ def post_xquik_tweet(config, text, in_reply_to_tweet_id=None):
     """
     Xquik APIでツイートを投稿する
     """
-    xquik_config = config.get('xquik', {})
+    xquik_config = get_required_xquik_config(config)
     payload = {
         "account": xquik_config['account'],
         "text": text
@@ -66,11 +91,9 @@ def post_tweet(config, client, text, in_reply_to_tweet_id=None):
     """
     設定されたバックエンドでツイートを投稿し、ツイートIDを返す
     """
-    backend = config.get('backend', 'x-api')
+    backend = get_twitter_backend(config)
     if backend == 'xquik':
         return post_xquik_tweet(config, text, in_reply_to_tweet_id)
-    if backend != 'x-api':
-        raise ValueError(f"Unsupported twitter backend: {backend}")
 
     response = client.create_tweet(text=text, in_reply_to_tweet_id=in_reply_to_tweet_id)
     return response.data['id']
@@ -91,7 +114,12 @@ def post_thread(config, summary, log_dir):
     log_path = os.path.join(log_dir, f"{summary['title'].replace(' ', '_')[:30]}_twitter_log.json")
     
     try:
-        client = None if config.get('backend') == 'xquik' else create_twitter_client(config)
+        backend = get_twitter_backend(config)
+        if backend == 'xquik':
+            get_required_xquik_config(config)
+            client = None
+        else:
+            client = create_twitter_client(config)
         
         tweets = []
         
