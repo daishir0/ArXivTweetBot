@@ -4,6 +4,9 @@ openai:
 
 # Twitter API Configuration
 twitter:
+  # Use "x-api" for direct Twitter/X API posting, or "xquik" for Xquik.
+  backend: "x-api"
+
   # OAuth 1.0a認証情報（v1.1 API用）
   api_key: "your-twitter-api-key"
   api_key_secret: "your-twitter-api-key-secret"
@@ -14,6 +17,12 @@ twitter:
   # OAuth 2.0認証情報（v2 API用）
   client_id: "your-twitter-client-id"
   client_secret: "your-twitter-client-secret"
+
+  # Xquik posting configuration. Required only when backend is "xquik".
+  xquik:
+    api_key: "your-xquik-api-key"
+    account: "@your-handle"
+    api_base_url: "https://xquik.com/api/v1"
 
 # Prompt Configuration
 prompt:

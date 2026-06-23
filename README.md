@@ -30,6 +30,9 @@ nano config.yaml  # Add your OpenAI API key
 # Twitter API credentials for posting tweets
 # Get them from: https://developer.twitter.com/
 # Edit the same config.yaml file to add your Twitter credentials
+
+# Optional: set twitter.backend to "xquik" and add your Xquik API key
+# plus connected X account handle under twitter.xquik.
 ```
 
 5. Make the shell scripts executable:
@@ -124,7 +127,9 @@ python twitter_log_analyzer.py --csv twitter_posts.csv
 
 4. **Twitter API Access**: You need a Twitter Developer account with appropriate access levels to use the Twitter posting functionality.
 
-5. **File Structure**:
+5. **Xquik Posting**: Set `twitter.backend` to `xquik` to post through Xquik. Thread posting needs confirmed tweet IDs for replies, so a pending Xquik confirmation will be logged and stop the thread.
+
+6. **File Structure**:
    - `dl/`: Downloaded PDF files
    - `text/`: Extracted text from PDFs
    - `summary/`: Generated summaries in JSON format
